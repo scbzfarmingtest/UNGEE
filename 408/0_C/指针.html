@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>&#x7B2C;7&#x7AE0; &#x6307;&#x9488;</title>
+        <style>
+</style>
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item { list-style-type: none; } .task-list-item-checkbox { margin-left: -20px; vertical-align: middle; }
+</style>
+        
+        
+        
+    </head>
+    <body class="vscode-body vscode-light">
+        <h1 id="第7章-指针">第7章 指针</h1>
+<p>由于客观条件限制（忘带书了），本笔记第一部分先根据《C程序设计教程（第三版）》记录，第二部分再使用《C程序设计（第五版）》记录。
+<br/><br/></p>
+<h1 id="第一部分">第一部分</h1>
+<h2 id="71-什么是指针">7.1 什么是指针</h2>
+<ol>
+<li>内存的地址、内存的内容
+<ul>
+<li>内存的地址：被占用内存的空间编号</li>
+<li>内存的内容：存在某部分内存中的内容，如变量等</li>
+</ul>
+</li>
+<li>直接访问、间接访问
+<ul>
+<li>直接访问：按变量地址存取变量值的方式</li>
+<li>间接访问：</li>
+</ul>
+</li>
+<li>指向：地址指向变量</li>
+<li>指针、指针变量
+<ul>
+<li>指针：地址的值，可以是指针变量代表的值</li>
+<li>指针变量：变量，代表某一指针的变量</li>
+</ul>
+</li>
+</ol>
+<h2 id="72-变量值指针和指向变量的指针变量">7.2 变量值指针和指向变量的指针变量</h2>
+<ol>
+<li><strong>指针运算符</strong>、<strong>取地址运算符</strong><pre><code class="language-C"><div><span class="hljs-keyword">float</span> a;                <span class="hljs-comment">//定义a, float型</span>
+<span class="hljs-keyword">int</span> * pointer_1;        <span class="hljs-comment">//定义pionter_1, int*型</span>
+pointer_1=&amp;a;           <span class="hljs-comment">//把a的地址赋给pointer_1</span>
+</div></code></pre>
+<ul>
+<li>指针运算符（*）：<code>&amp;a</code>是<code>float</code>变量<code>a</code>的地址</li>
+<li>取地址运算符（&amp;）：<code>*p</code>是指针变量<code>p</code>指向的变量的值</li>
+</ul>
+<blockquote>
+<p><strong>注意：</strong> <code class="language-C">*pointer</code>有两层含义——</p>
+<ol>
+<li>声明变量：<code class="language-C">int *pointer;</code></li>
+<li>指针运算符：<code class="language-C">*pointer=a;</code></li>
+</ol>
+</blockquote>
+</li>
+<li><strong>基类型</strong>：指针变量指向的变量的类型</li>
+<li>指针变量的定义：<br>
+<kbd>基类型</kbd>+<kbd>space</kbd>+<kbd>*</kbd>+<kbd>指针变量名</kbd>
+<blockquote>
+<p><strong>注意：</strong></p>
+<ol>
+<li>变量是<kbd>指针变量名</kbd>，而非&quot;<kbd>*指针变量名</kbd>&quot;</li>
+<li>定义指针变量时<strong>必须指定基类型</strong>。（原因？变量类型不同，占的内存大小不同）</li>
+</ol>
+</blockquote>
+</li>
+<li>指针变量的赋值<pre><code class="language-c"><div><span class="hljs-keyword">float</span> a;
+<span class="hljs-keyword">float</span> *pinter_a;
+pointer_a=&amp;a;         <span class="hljs-comment">//赋值语句</span>
+</div></code></pre>
+<blockquote>
+<p><strong>注意：</strong></p>
+<ol>
+<li><strong>赋值给地址时</strong>，只能令 <code>左地址变量=&amp;变量</code> ；若 <code>*左地址变量=值</code> ，则赋值给了<strong>指针指向的变量</strong>。 e.g.<pre><code class="language-c"><div>pointer_a = &amp;a;    <span class="hljs-comment">//“左地址变量=&amp;变量”，含义为把a的地址赋给pointer_a</span>
+*pointer_a = <span class="hljs-number">1.0</span>； <span class="hljs-comment">//“左地址变量=值”，含义为a=1.0</span>
+*pointer_a = a;    <span class="hljs-comment">//含义同*pointer_a = 1.0</span>
+
+**pointer_a = a;   <span class="hljs-comment">//二级指针，即“变量pointer_a” 指向了另一个指针变量，且后者指向 “变量a”</span>
+*pointer_a = &amp;a;   <span class="hljs-comment">//二级指针，等同于 **pointer_a = a</span>
+</div></code></pre>
+</li>
+<li>指针的基类型和指针指向的变量类型必须相同。</li>
+<li><strong>赋值给指针指向的变量</strong><pre><code class="language-c"><div><span class="hljs-comment">//变量声明</span>
+<span class="hljs-keyword">int</span> a, *pointer_a, b, *pointer_b, *pointer_temp;
+pointer_a=&amp;a;
+pointer_b=&amp;b;
+
+<span class="hljs-comment">//赋值</span>
+a = *pointer_b;               <span class="hljs-comment">//把b的值赋给a</span>
+*pointer_a = b;               <span class="hljs-comment">//把a的值赋给b</span>
+*pointer_temp = *pointer_b    <span class="hljs-comment">//错误！！！因为 变量pointer_temp 没有赋值，可以指向任意地址，赋值给位置地址变量后，程序很可能就崩溃了</span>
+</div></code></pre>
+</li>
+</ol>
+<blockquote>
+<p>注意：</p>
+<ol>
+<li><code class="language-C">*p1=*p2</code> 不是一定不能用，但一定要注意 <code class="language-C">*p1</code> 必须有过<em>指针变量值的初始化</em>。</li>
+<li><code class="language-C">p1=p2</code> 不受影响，因为这里只改变了p1的指向，没有改变具体的（非指针变量的）值</li>
+</ol>
+</blockquote>
+</blockquote>
+</li>
+<li>
+<ul class="contains-task-list">
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> 指针变量的作用：（例7.2,例7.2_Wrong,例7.3）形参不能传递值给实参，但借助指针变量实现功能。指针变量可以起到以下两个目的：
+<ol>
+<li>改变实参；</li>
+<li>功能函数返回一个以上的返回值；</li>
+</ol>
+</li>
+</ul>
+<blockquote>
+<p>修改数据的4种有效办法和2种错误办法：</p>
+<ul>
+<li>正确办法
+<ol>
+<li>在 <code class="language-C">main</code> 中直接赋值；</li>
+<li>在 <code class="language-C">main</code> 中调换指针(e.g.例7.2)；</li>
+<li>定义 <code class="language-C">function(int *p)</code> ，修改 <code class="language-C">*p</code> 的值；<br>
+  &lt;!--<strong>最推荐！符合程序化设计需要</strong>--&gt;</li>
+<li>用 <code class="language-C">statics</code> 变量<br>
+  &lt;!--有特殊需要才用--&gt;</li>
+</ol>
+</li>
+<li>错误办法
+<ol>
+<li>定义 <code class="language-C">function(int a)</code> ，修改 <code class="language-C">a</code> 的值；
+<blockquote>
+<p>错误原因：形参不能传递值回实参；</p>
+</blockquote>
+</li>
+<li>定义 <code class="language-C">function(int *p)</code> ，修改 <code class="language-C">p</code> 的值；
+<blockquote>
+<p>错误原因：形参不能传递值回实参，<strong>即使是指针变量也不行！！！</strong></p>
+</blockquote>
+</li>
+</ol>
+</li>
+</ul>
+</blockquote>
+</li>
+<li></li>
+</ol>
+
+    </body>
+    </html>
