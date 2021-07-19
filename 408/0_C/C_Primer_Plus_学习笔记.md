@@ -97,7 +97,7 @@
       > 注意：尽管`char`类型用来存储字符，但从技术层面上来看，`char`应该被认为是一种整数类型。
       1. 初始化：  
           &emsp; 基础语法如 `char a; a='A'` 。然而奇怪的是，在C语言中，字符常量（如'A'）是以 `int` 类型存储的。因此，如果有一个 `int` 为32位， `char` 为8位的操作系统，我们可以找一个空间储存4个字符，赋值给 `char` 类型变量时，会等同于用最后一个字符赋值。如下图
-          ![字符常量赋值给`char`类型](408\0_C\sources\C Primer Plus\CharInitialization.png) 
+          ![字符常量赋值给`char`类型](../C Primer Plus/../0_C/sources/C%20Primer%20Plus/CharInitialization.png../0_C/sources/C%20Primer%20Plus/CharInitialization.pngCharInitialization.png) 
           - [ ] 程序有一个奇怪的问题，用 `'NFATE'`赋值时，因为 `int` 类型只能接受4个8位字符，故 `'N'` 会被丢弃，但是 `>>32` 应该得到`0`不是吗？
       3. 非打印字符和转义序列(escape sequence)：  
           - 警报字符：如 `\a` 。C语言规定警报字符不能改变活跃位置。  
